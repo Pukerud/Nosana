@@ -14,7 +14,7 @@ while true; do
     # Check if the log shows that the machine is busy
     if grep -q "Running container" /tmp/nosana-log-check.log; then
         if [ "$MINING_STATE" == "started" ]; then
-            echo "$(date +'%Y-%m-%d %H:%M:%S') Already stopped mining. BUSY!!"
+           : # echo "$(date +'%Y-%m-%d %H:%M:%S') Already stopped mining. BUSY!!"
         else
             echo "$(date +'%Y-%m-%d %H:%M:%S') BUSY!! I CAN NOT MINE NOW, stopping mining"
             miner stop
@@ -22,7 +22,7 @@ while true; do
         fi
     else
         if [ "$MINING_STATE" == "stopped" ]; then
-            echo "$(date +'%Y-%m-%d %H:%M:%S') Already mining. CAN MINE NOW"
+            : # echo "$(date +'%Y-%m-%d %H:%M:%S') Already mining. CAN MINE NOW"
         else
             echo "$(date +'%Y-%m-%d %H:%M:%S') SLEEPING, CAN MINE NOW, starting mining"
             miner start
