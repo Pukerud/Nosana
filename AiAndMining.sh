@@ -6,7 +6,7 @@ if miner status | grep -q "QUEUED"; then
 else
     MINING_STATE="started"
 fi
-
+echo "V1.1"
 while true; do
     # Fetch the live logs from the container
     docker logs --tail 10 nosana-node > /tmp/nosana-log-check.log
@@ -14,7 +14,7 @@ while true; do
     # Check if the log shows that the machine is busy
     if grep -q "Running container" /tmp/nosana-log-check.log; then
         if [ "$MINING_STATE" == "started" ]; then
-            echo "Already stopped mining. BUSY!!"
+            # echo "Already stopped mining. BUSY!!"
         else
             echo "BUSY!! I CAN NOT MINE NOW, stopping mining"
             miner stop
@@ -22,7 +22,7 @@ while true; do
         fi
     else
         if [ "$MINING_STATE" == "stopped" ]; then
-            echo "Already mining. CAN MINE NOW"
+            #  echo "Already mining. CAN MINE NOW"
         else
             echo "SLEEPING, CAN MINE NOW, starting mining"
             miner start
