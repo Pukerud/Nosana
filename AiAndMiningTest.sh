@@ -17,6 +17,7 @@ fi
 # Start the screen session and run the mining script inside it
 echo "Starting a new 'nosana' screen session..."
 screen -dmS nosana bash -c '
+echo "Inside the nosana screen session"
 if miner status | grep -q "QUEUED"; then
     MINING_STATE="stopped"
 else
@@ -48,6 +49,7 @@ while true; do
 done
 '
 
+# Check if the screen session started correctly
 if screen -list | grep -q "nosana"; then
     echo "Screen session 'nosana' is successfully running."
 else
