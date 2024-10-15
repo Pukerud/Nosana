@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Get the current directory
+CURRENT_DIR=$(pwd)
+
 # Check if 'screen' is installed, and install it if not
 if ! command -v screen &> /dev/null; then
     echo "screen is not installed. Installing..."
@@ -16,7 +19,7 @@ fi
 
 # Start a new screen session and run the AiAndMiningCore.sh script
 echo "Starting a new 'nosana' screen session..."
-screen -dmS nosana /path/to/AiAndMiningCore.sh
+screen -dmS nosana "$CURRENT_DIR/AiAndMiningCore.sh"
 
 # Check if the screen session started correctly
 if screen -list | grep -q "nosana"; then
