@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# Check if 'screen' is installed, and install it if not
-if ! command -v screen &> /dev/null; then
-    echo "screen is not installed. Installing..."
-    sudo apt-get update && sudo apt-get install -y screen
-else
-    echo "screen is already installed."
-fi
-
 # Check if the screen session 'nosana' is already running
 if screen -list | grep -q "nosana"; then
     echo "Screen session 'nosana' is already running."
