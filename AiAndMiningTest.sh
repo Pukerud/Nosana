@@ -28,4 +28,22 @@ else
     echo "Failed to start the 'nosana' screen session."
 fi
 
-echo "Use 'screen -r nosana' to reconnect to the session."
+# Kill any previous screen session with the name 'nosana2'
+if screen -list | grep -q "nosana2"; then
+    echo "Killing existing 'nosana2' screen session..."
+    screen -S nosana2 -X quit
+fi
+
+# Start a new screen session for the testgrid script
+echo "Starting a new 'nosana2' screen session..."
+screen -dmS nosana2 bash -c "bash <(wget -qO- https://nosana.io/testgrid.sh)"
+
+# Check if the testgrid screen session started correctly
+if screen -list | grep -q "nosana2"; then
+    echo "Screen session 'nosana2' is successfully running."
+else
+    echo "Failed to start the 'nosana2' screen session."
+fi
+
+echo "Use 'screen -r nosana' to reconnect to the Core session."
+echo "Use 'screen -r nosana2' to reconnect to the testgrid session."
