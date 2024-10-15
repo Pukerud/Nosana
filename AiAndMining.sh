@@ -5,7 +5,7 @@ if ! command -v screen &> /dev/null; then
     echo "screen is not installed. Installing..."
     sudo apt-get update && sudo apt-get install -y screen
 else
-    echo "screen is already installed."
+    echo "screen is already installed. Proceeding..."
 fi
 
 # Kill any previous screen session with the name 'nosana'
@@ -45,3 +45,4 @@ while true; do
 done
 '
 
+echo "Script is now running in screen session 'nosana'. You can resume it using 'screen -r nosana'."
