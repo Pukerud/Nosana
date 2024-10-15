@@ -1,18 +1,28 @@
 #!/bin/bash
 
-# Initialize mining state based on the current miner status
+# Check if 'screen' is installed, and install it if not
+if ! command -v screen &> /dev/null; then
+    echo "screen is not installed. Installing..."
+    sudo apt-get update && sudo apt-get install -y screen
+else
+    echo "screen is already installed. Proceeding..."
+fi
+
+# Kill any previous screen session with the name 'nosana'
+screen -S nosana -X quit
+
+# Start the screen session and run the mining script directly inside it
+screen -dmS nosana bash -c '
 if miner status | grep -q "QUEUED"; then
     MINING_STATE="stopped"
 else
     MINING_STATE="started"
 fi
-echo "$(date +'%Y-%m-%d %H:%M:%S') V1.1"  # Initial version log
+echo "$(date +'%Y-%m-%d %H:%M:%S') V1.1"
 
 while true; do
-    # Fetch the live logs from the container
     docker logs --tail 10 nosana-node > /tmp/nosana-log-check.log
 
-    # Check if the log shows that the machine is busy
     if grep -q "Running container" /tmp/nosana-log-check.log; then
         if [ "$MINING_STATE" == "started" ]; then
             :  # Do nothing, already busy
@@ -30,7 +40,8 @@ while true; do
             MINING_STATE="stopped"
         fi
     fi
-
-    # Sleep for 30 seconds before checking again
     sleep 30
 done
+'
+
+echo "Script is running inside the screen session 'nosana'. Use 'screen -r nosana' to view it."
