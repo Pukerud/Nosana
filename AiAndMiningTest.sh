@@ -5,13 +5,17 @@ if ! command -v screen &> /dev/null; then
     echo "screen is not installed. Installing..."
     sudo apt-get update && sudo apt-get install -y screen
 else
-    echo "screen is already installed. Proceeding..."
+    echo "screen is already installed."
 fi
 
 # Kill any previous screen session with the name 'nosana'
-screen -S nosana -X quit
+if screen -list | grep -q "nosana"; then
+    echo "Killing existing 'nosana' screen session..."
+    screen -S nosana -X quit
+fi
 
-# Start the screen session and run the mining script directly inside it
+# Start the screen session and run the mining script inside it
+echo "Starting a new 'nosana' screen session..."
 screen -dmS nosana bash -c '
 if miner status | grep -q "QUEUED"; then
     MINING_STATE="stopped"
@@ -44,4 +48,10 @@ while true; do
 done
 '
 
-echo "Script is running inside the screen session 'nosana'. Use 'screen -r nosana' to view it."
+if screen -list | grep -q "nosana"; then
+    echo "Screen session 'nosana' is successfully running."
+else
+    echo "Failed to start the 'nosana' screen session."
+fi
+
+echo "Use 'screen -r nosana' to reconnect to the session."
