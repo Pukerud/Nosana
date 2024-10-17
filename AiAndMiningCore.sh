@@ -3,13 +3,18 @@
 # Get the current directory
 CURRENT_DIR=$(pwd)
 
+# Function to strip ANSI escape sequences
+strip_ansi() {
+    sed -r 's/\x1B\[[0-9;]*[mGKH]//g'
+}
+
 # Initialize mining state based on the most recent Docker log entry
-if docker logs --tail 1 nosana-node | grep -q "^QUEUED"; then
+if docker logs --tail 1 nosana-node | strip_ansi | grep -q "QUEUED"; then
     MINING_STATE="stopped"
 else
     MINING_STATE="started"
 fi
-echo "$(date +'%Y-%m-%d %H:%M:%S') V1.3"  # Updated version log
+echo "$(date +'%Y-%m-%d %H:%M:%S') V1.5"  # Updated version log
 
 # Variables to control the timing for start and stop checks
 STOP_CHECK_INTERVAL=1    # Check every 1 second for stopping mining
@@ -23,11 +28,11 @@ while true; do
         continue  # Skip the rest of the loop and retry
     fi
 
-    # Read the last log entry
-    LAST_LOG_ENTRY=$(cat /tmp/nosana-log-check.log)
+    # Read and clean the last log entry by removing ANSI sequences
+    LAST_LOG_ENTRY=$(cat /tmp/nosana-log-check.log | strip_ansi)
 
-    # Check if the last log entry starts with "QUEUED"
-    if ! echo "$LAST_LOG_ENTRY" | grep -q "^QUEUED"; then
+    # Check if the cleaned log entry contains "QUEUED" anywhere
+    if ! echo "$LAST_LOG_ENTRY" | grep -q "QUEUED"; then
         if [ "$MINING_STATE" == "started" ]; then
             echo "$(date +'%Y-%m-%d %H:%M:%S') BUSY!! I CAN NOT MINE NOW, stopping mining"
             miner stop
