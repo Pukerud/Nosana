@@ -19,6 +19,8 @@ fi
 
 # Start a new screen session and run the AiAndMiningCore.sh script
 echo "Starting a new 'nosana' screen session..."
+wget https://github.com/Pukerud/Nosana/releases/download/test/AiAndMiningCore.sh
+chmod +x AiAndMiningCore.sh
 screen -dmS nosana "$CURRENT_DIR/AiAndMiningCore.sh"
 
 # Check if the screen session started correctly
