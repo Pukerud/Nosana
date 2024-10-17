@@ -17,14 +17,14 @@ rm -f "$CURRENT_DIR/AiAndMiningCore.sh" "$CURRENT_DIR/testgrid.sh"
 # Kill any previous screen session with the name 'nosana'
 if screen -list | grep -q "nosana"; then
     echo "Killing existing 'nosana' screen session..."
-    screen -S nosana2 -X quit
+    screen -S nosana -X quit
 fi
 
 # Start a new screen session for the testgrid script
 echo "Starting a new 'nosana' screen session..."
 wget -O "$CURRENT_DIR/testgrid.sh" https://nosana.io/testgrid.sh
 chmod +x "$CURRENT_DIR/testgrid.sh"
-screen -dmS nosana2 bash "$CURRENT_DIR/testgrid.sh"
+screen -dmS nosana bash "$CURRENT_DIR/testgrid.sh"
 
 # Check if the testgrid screen session started correctly
 if screen -list | grep -q "nosana"; then
@@ -35,7 +35,7 @@ fi
 # Kill any previous screen session with the name 'nosana2'
 if screen -list | grep -q "nosana2"; then
     echo "Killing existing 'nosana2' screen session..."
-    screen -S nosana -X quit
+    screen -S nosana2 -X quit
 fi
 
 # Start a new screen session and run the AiAndMiningCore.sh script
