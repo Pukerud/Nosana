@@ -16,6 +16,9 @@ if screen -list | grep -q "nosana"; then
     echo "Killing existing 'nosana' screen session..."
     screen -S nosana -X quit
 fi
+# Cleanup
+echo "Cleaning up existing scripts..."
+rm -f "$CURRENT_DIR/AiAndMiningCore.sh" "$CURRENT_DIR/testgrid.sh"
 
 # Start a new screen session and run the AiAndMiningCore.sh script
 echo "Starting a new 'nosana' screen session..."
@@ -38,7 +41,9 @@ fi
 
 # Start a new screen session for the testgrid script
 echo "Starting a new 'nosana2' screen session..."
-screen -dmS nosana2 bash -c "bash <(wget -qO- https://nosana.io/testgrid.sh)"
+wget -O "$CURRENT_DIR/testgrid.sh" https://nosana.io/testgrid.sh
+chmod +x "$CURRENT_DIR/testgrid.sh"
+screen -dmS nosana2 bash "$CURRENT_DIR/testgrid.sh"
 
 # Check if the testgrid screen session started correctly
 if screen -list | grep -q "nosana2"; then
