@@ -17,7 +17,7 @@ fi
 echo "$(date +'%Y-%m-%d %H:%M:%S') V1.5"  # Updated version log
 
 # Variables to control the timing for start and stop checks
-STOP_CHECK_INTERVAL=1    # Check every 1 second for stopping mining
+STOP_CHECK_INTERVAL=0.5    # Check every 1 second for stopping mining
 START_CHECK_INTERVAL=10  # Check every 10 seconds for starting mining
 
 while true; do
